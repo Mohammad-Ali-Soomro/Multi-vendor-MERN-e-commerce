@@ -36,6 +36,7 @@ import {
   OrderDetailsPage,
   TrackOrderPage,
   UserInbox,
+  NotFound,
 } from "./routes/Routes";
 
 import {
@@ -324,6 +325,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="bottom-center" autoClose={5000} theme="dark" />
     </BrowserRouter>
