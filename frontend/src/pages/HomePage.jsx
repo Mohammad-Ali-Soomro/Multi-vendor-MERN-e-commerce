@@ -13,11 +13,21 @@ const HomePage = () => {
     <div>
       <Header activeHeading={1} />
       <Hero />
-      <Categories />
-      <BestDeals />
-      <Events />
-      <FeaturedProduct />
-      <Sponsored />
+      <div className="reveal">
+        <Categories />
+      </div>
+      <div className="reveal">
+        <BestDeals />
+      </div>
+      <div className="reveal">
+        <Events />
+      </div>
+      <div className="reveal">
+        <FeaturedProduct />
+      </div>
+      <div className="reveal">
+        <Sponsored />
+      </div>
       <Footer />
     </div>
   );

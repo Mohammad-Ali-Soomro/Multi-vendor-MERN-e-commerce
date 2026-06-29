@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 import { addTocart } from "../../redux/actions/cart";
 import CountDown from "./CountDown";
-import styles from "../../styles/styles";
 
 const EventCard = ({ active, data }) => {
   const dispatch = useDispatch();
@@ -28,59 +28,53 @@ const EventCard = ({ active, data }) => {
   };
 
   return (
-    <div className={`w-full block bg-white rounded-lg border p-4 ${active ? "unset" : "mb-10"} 800px:flex gap-6`}>
-      {/* Left Image Section */}
-      <div className="w-full 800px:w-[50%] flex justify-center">
-        <img
-          src={data?.images && data.images[0]?.url}
+    <div className={`flex flex-col 800px:flex-row gap-8 bg-white rounded-3xl overflow-hidden ${active ? '' : 'mb-12'}`}>
+      <div className="w-full 800px:w-[45%] bg-cream-dark rounded-3xl overflow-hidden min-h-[280px] flex items-center justify-center">
+        <img 
+          src={data?.images?.[0]?.url} 
           alt={data?.name}
-          className="w-full max-h-[350px] object-contain rounded"
+          className="w-full h-full object-contain p-8"
         />
       </div>
-
-      {/* Right Details Section */}
-      <div className="w-full 800px:w-[50%] flex flex-col justify-between py-2 space-y-4">
-        <div className="space-y-2">
-          <h2 className="text-[20px] font-[600] text-gray-800 font-Poppins">
-            {data?.name}
-          </h2>
-          <p className="text-gray-500 text-sm leading-relaxed">
-            {data?.description}
-          </p>
+      
+      <div className="flex-1 p-8 flex flex-col justify-center">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="badge-new">SALE EVENT</span>
+          <span className="font-sans text-sm text-text-muted">Limited stock</span>
+        </div>
+        
+        <h2 className="font-editorial text-2xl 800px:text-3xl font-bold text-dark mb-3 leading-tight">
+          {data?.name}
+        </h2>
+        <p className="font-sans text-text-muted text-sm leading-relaxed mb-6">
+          {data?.description}
+        </p>
+        
+        <div className="flex items-baseline gap-3 mb-4">
+          <span className="font-editorial text-3xl font-bold text-dark">${data?.discountPrice}</span>
+          {data?.originalPrice && (
+            <span className="font-sans text-text-muted line-through text-lg">${data?.originalPrice}</span>
+          )}
+          <span className="font-sans text-sm text-emerald-600 font-medium">{data?.sold_out || 0} sold</span>
         </div>
 
-        {/* Pricing & Sold Stats */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <h5 className="font-bold text-[18px] text-[#333]">
-              ${data?.discountPrice}
-            </h5>
-            <h5 className="font-[500] text-[15px] text-[#d55b45] line-through">
-              ${data?.originalPrice}
-            </h5>
-          </div>
-          <span className="text-[14px] text-[#44a55e] font-[600]">
-            {data?.sold_out || 0} sold
-          </span>
-        </div>
-
-        {/* CountDown Timer */}
-        <div className="border-t border-b py-3">
+        {/* Countdown */}
+        <div className="bg-dark rounded-2xl p-4 mb-6 inline-flex gap-4">
           <CountDown data={data} />
         </div>
 
-        {/* Buttons */}
-        <div className="flex items-center space-x-4">
-          <Link to={`/product/${data?._id}?isEvent=true`} className="w-[150px]">
-            <div className="w-full h-[40px] bg-gray-900 text-white rounded font-semibold flex items-center justify-center hover:bg-black transition text-sm">
-              See Details
-            </div>
+        <div className="flex items-center gap-3">
+          <Link to={`/product/${data?._id}?isEvent=true`}>
+            <button className="btn-outline-dark text-sm py-3 px-6">
+              View Details
+            </button>
           </Link>
-          <button
+          <button 
+            className="btn-lavender text-sm py-3 px-6"
             onClick={addToCartHandler}
-            className="w-[150px] h-[40px] bg-orange-500 text-white rounded font-semibold hover:bg-orange-600 transition text-sm"
           >
-            Add to cart
+            <AiOutlineShoppingCart size={16} />
+            Add to Cart
           </button>
         </div>
       </div>

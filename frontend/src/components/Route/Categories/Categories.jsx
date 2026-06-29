@@ -1,56 +1,87 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { brandingData, categoriesData } from "../../../static/data";
-import styles from "../../../styles/styles";
 
 const Categories = () => {
   const navigate = useNavigate();
-
+  
   return (
     <>
-      {/* Branding Section */}
-      <div className={`${styles.section} hidden sm:block`}>
-        <div className="my-12 flex justify-between w-full shadow-sm bg-white p-5 rounded-md gap-4">
-          {brandingData &&
-            brandingData.map((i, index) => (
-              <div className="flex items-start" key={index}>
-                {i.icon}
-                <div className="px-3">
-                  <h3 className="font-bold text-sm md:text-base">{i.title}</h3>
-                  <p className="text-xs md:text-sm text-gray-500">{i.Description}</p>
+      {/* Branding/trust bar */}
+      <section className="bg-dark section-spacing-sm hidden sm:block">
+        <div className="w-11/12 max-w-[1200px] mx-auto">
+          <p className="text-center font-sans text-sm text-cream/50 mb-10 tracking-widest uppercase font-medium">
+            Trusted by professionals everywhere
+          </p>
+          {/* Marquee */}
+          <div className="overflow-hidden">
+            <div className="marquee-track">
+              {[...brandingData, ...brandingData].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 text-cream/60 whitespace-nowrap">
+                  <span className="text-cream/40">{item.icon}</span>
+                  <span className="font-sans font-semibold text-base">{item.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories grid */}
+      <section className="section-spacing bg-cream">
+        <div className="w-11/12 max-w-[1200px] mx-auto">
+          <div className="flex items-end justify-between mb-12">
+            <h2 className="font-editorial text-[clamp(2rem,4vw,3.5rem)] font-bold text-dark leading-tight">
+              Shop by<br />
+              <span className="italic text-text-muted">category</span>
+            </h2>
+            <Link to="/products" className="btn-outline-dark text-sm py-2.5 px-6">
+              View All
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {categoriesData && categoriesData.map((i, index) => (
+              <div
+                key={i.id}
+                className={`
+                  relative overflow-hidden rounded-3xl cursor-pointer group transition-all duration-300
+                  hover:scale-[1.03] hover:shadow-xl
+                  ${index === 0 ? 'col-span-2 md:col-span-1 lg:col-span-2 row-span-2' : ''}
+                `}
+                style={{ 
+                  background: index % 3 === 0 ? 'var(--dark)' : index % 3 === 1 ? 'var(--lavender-light)' : 'white',
+                  border: '1px solid rgba(26,26,26,0.06)',
+                  minHeight: index === 0 ? '280px' : '130px'
+                }}
+                onClick={() => {
+                  navigate(`/products?category=${i.title}`);
+                }}
+              >
+                <div className="absolute inset-0 flex flex-col justify-between p-5">
+                  <img
+                    src={i.image_Url}
+                    className="w-12 h-12 object-contain"
+                    alt={i.title}
+                  />
+                  <div>
+                    <h3 
+                      className="font-editorial font-semibold text-sm leading-tight"
+                      style={{ color: index % 3 === 0 ? 'var(--cream)' : 'var(--dark)' }}
+                    >
+                      {i.title}
+                    </h3>
+                    <div 
+                      className="w-0 h-0.5 group-hover:w-full transition-all duration-300 rounded-full mt-1"
+                      style={{ background: index % 3 === 0 ? 'var(--lavender)' : 'var(--dark)' }}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
+          </div>
         </div>
-      </div>
-
-      {/* Categories Grid */}
-      <div className={`${styles.section} bg-white p-6 rounded-lg shadow-sm mb-12`}>
-        <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-y-[20px]">
-          {categoriesData &&
-            categoriesData.map((i) => {
-              const handleSubmit = (category) => {
-                navigate(`/products?category=${category.title}`);
-              };
-              return (
-                <div
-                  className="w-full h-[100px] flex items-center justify-between cursor-pointer overflow-hidden p-3 hover:bg-gray-50 rounded transition"
-                  key={i.id}
-                  onClick={() => handleSubmit(i)}
-                >
-                  <h5 className="text-[18px] font-[500] leading-[1.3] text-[#333] pr-2">
-                    {i.title}
-                  </h5>
-                  <img
-                    src={i.image_Url}
-                    alt={i.title}
-                    className="w-[120px] object-cover h-full rounded"
-                  />
-                </div>
-              );
-            })}
-        </div>
-      </div>
+      </section>
     </>
   );
 };
