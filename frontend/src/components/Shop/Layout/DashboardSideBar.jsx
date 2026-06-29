@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { RxDashboard } from "react-gradient-to-r"; // wait, RxDashboard is from rx
 import { RxDashboard as DashboardIcon } from "react-icons/rx";
 import { FiShoppingBag, FiPackage } from "react-icons/fi";
 import { AiOutlineFolderAdd, AiOutlineGift } from "react-icons/ai";
