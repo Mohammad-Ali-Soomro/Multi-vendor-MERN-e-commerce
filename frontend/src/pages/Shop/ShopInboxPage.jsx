@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardHeader from "../../components/Shop/Layout/DashboardHeader";
 import DashboardSideBar from "../../components/Shop/Layout/DashboardSideBar";
+import DashboardMessages from "../../components/Shop/DashboardMessages";
 
 const ShopInboxPage = () => {
   return (
@@ -10,10 +11,8 @@ const ShopInboxPage = () => {
         <div className="w-[80px] 800px:w-[330px]">
           <DashboardSideBar active={8} />
         </div>
-        <div className="w-full justify-center flex p-8">
-          <div className="w-full bg-white border shadow-sm rounded p-8 min-h-[60vh] flex items-center justify-center">
-            <h5 className="text-gray-500 font-semibold text-lg">Inbox messages panel</h5>
-          </div>
+        <div className="w-full justify-center flex">
+          <DashboardMessages />
         </div>
       </div>
     </div>
