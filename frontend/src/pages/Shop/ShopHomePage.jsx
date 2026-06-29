@@ -5,16 +5,16 @@ import ShopInfo from "../../components/Shop/ShopInfo";
 import ShopProfileData from "../../components/Shop/ShopProfileData";
 import styles from "../../styles/styles";
 
-const ShopPreviewPage = () => {
+const ShopHomePage = () => {
   return (
     <div>
       <Header />
       <div className={`${styles.section} py-10 bg-[#f5f5f5] flex justify-between gap-6 flex-col md:flex-row`}>
         <div className="w-full md:w-[25%] sticky top-[10px] z-10">
-          <ShopInfo isOwner={false} />
+          <ShopInfo isOwner={true} />
         </div>
         <div className="w-full md:w-[72%]">
-          <ShopProfileData isOwner={false} />
+          <ShopProfileData isOwner={true} />
         </div>
       </div>
       <Footer />
@@ -22,4 +22,4 @@ const ShopPreviewPage = () => {
   );
 };
 
-export default ShopPreviewPage;
+export default ShopHomePage;
