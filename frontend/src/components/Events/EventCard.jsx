@@ -27,6 +27,8 @@ const EventCard = ({ active, data }) => {
     toast.success("Item added to cart successfully!");
   };
 
+  if (!data) return null;
+
   return (
     <div className={`flex flex-col 800px:flex-row gap-8 bg-white rounded-3xl overflow-hidden ${active ? '' : 'mb-12'}`}>
       <div className="w-full 800px:w-[45%] bg-cream-dark rounded-3xl overflow-hidden min-h-[280px] flex items-center justify-center">

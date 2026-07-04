@@ -5,6 +5,7 @@ import { server } from "../../server";
 
 const CountDown = ({ data }) => {
   const calculateTimeLeft = () => {
+    if (!data?.Finish_Date) return {};
     const difference = +new Date(data?.Finish_Date) - +new Date();
     let timeLeft = {};
 
