@@ -39,7 +39,7 @@ router.post(
       expiresIn: "5m",
     });
 
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `https://multi-vendor-mern-e-commerce-itsy-dektlk5ij.vercel.app/activation/${activationToken}`;
 
     try {
       await sendMail({

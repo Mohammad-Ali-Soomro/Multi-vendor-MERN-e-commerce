@@ -8,7 +8,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://your-vercel-frontend-url.vercel.app"],
+    origin: ["http://localhost:3000", "https://multi-vendor-mern-e-commerce-itsy-dektlk5ij.vercel.app"],
     credentials: true,
   })
 );
