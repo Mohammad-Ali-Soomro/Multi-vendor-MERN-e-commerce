@@ -7,27 +7,28 @@ import Events from "../components/Events/Events";
 import FeaturedProduct from "../components/Route/FeaturedProduct/FeaturedProduct";
 import Sponsored from "../components/Route/Sponsored";
 import Footer from "../components/Layout/Footer";
+import RevealSection from "../components/Layout/RevealSection";
 
 const HomePage = () => {
   return (
     <div>
       <Header activeHeading={1} />
       <Hero />
-      <div className="reveal">
+      <RevealSection>
         <Categories />
-      </div>
-      <div className="reveal">
+      </RevealSection>
+      <RevealSection>
         <BestDeals />
-      </div>
-      <div className="reveal">
+      </RevealSection>
+      <RevealSection>
         <Events />
-      </div>
-      <div className="reveal">
+      </RevealSection>
+      <RevealSection>
         <FeaturedProduct />
-      </div>
-      <div className="reveal">
+      </RevealSection>
+      <RevealSection>
         <Sponsored />
-      </div>
+      </RevealSection>
       <Footer />
     </div>
   );
