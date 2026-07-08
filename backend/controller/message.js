@@ -1,6 +1,7 @@
 const express = require("express");
 const Messages = require("../model/messages");
 const cloudinary = require("cloudinary");
+const pusher = require("../utils/pusher");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
@@ -31,6 +32,8 @@ router.post(
       });
 
       await message.save();
+
+      pusher.trigger(`chat-${messageData.conversationId}`, "new-message", message);
 
       res.status(201).json({
         success: true,

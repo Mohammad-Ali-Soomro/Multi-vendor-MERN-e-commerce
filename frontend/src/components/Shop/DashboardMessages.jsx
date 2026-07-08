@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import socketIO from "socket.io-client";
+import Pusher from "pusher-js";
 import { format } from "timeago.js";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 import { server } from "../../server";
 import styles from "../../styles/styles";
 
-const SOCKET_ENDPOINT = "http://localhost:4000";
-const socket = socketIO(SOCKET_ENDPOINT, { transports: ["websocket"] });
+const pusherClient = new Pusher("10786f69d8cc214426b4", {
+  cluster: "ap2",
+});
 
 const DashboardMessages = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -29,26 +30,24 @@ const DashboardMessages = () => {
 
   const scrollRef = useRef();
 
-  // Socket setup listeners
   useEffect(() => {
-    socket.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        images: data.images,
-        createdAt: Date.now(),
+    if (currentChat?._id) {
+      const channel = pusherClient.subscribe(`chat-${currentChat._id}`);
+      channel.bind("new-message", (data) => {
+        setMessages((prev) => {
+          const alreadyExists = prev.some(
+            (m) => m._id && data._id && m._id === data._id
+          );
+          if (alreadyExists) return prev;
+          return [...prev, data];
+        });
       });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (
-      arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.sender)
-    ) {
-      setMessages((prev) => [...prev, arrivalMessage]);
+      return () => {
+        channel.unbind("new-message");
+        pusherClient.unsubscribe(`chat-${currentChat._id}`);
+      };
     }
-  }, [arrivalMessage, currentChat]);
+  }, [currentChat]);
 
   // Fetch seller conversations
   useEffect(() => {
@@ -67,16 +66,6 @@ const DashboardMessages = () => {
       getConversations();
     }
   }, [seller?._id, messages]);
-
-  // Connect seller & list online users
-  useEffect(() => {
-    if (seller?._id) {
-      socket.emit("addUser", seller._id);
-      socket.on("getUsers", (users) => {
-        setOnlineUsers(users);
-      });
-    }
-  }, [seller?._id]);
 
   // Fetch messages of current chat
   useEffect(() => {
@@ -101,23 +90,9 @@ const DashboardMessages = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const onlineCheck = (chat) => {
-    const member = chat.members.find((m) => m !== seller?._id);
-    const online = onlineUsers.some((u) => u.userId === member);
-    return online;
-  };
-
   const sendMessageHandler = async (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
-
-    const receiverId = currentChat.members.find((m) => m !== seller?._id);
-
-    socket.emit("sendMessage", {
-      senderId: seller._id,
-      receiverId,
-      text: newMessage,
-    });
 
     const msgObj = {
       sender: seller._id,
@@ -139,11 +114,6 @@ const DashboardMessages = () => {
   };
 
   const updateLastMessage = async () => {
-    socket.emit("updateLastMessage", {
-      lastMessage: newMessage,
-      lastMessageId: seller._id,
-    });
-
     try {
       await axios.put(
         `${server}/conversation/update-last-message/${currentChat._id}`,
@@ -173,14 +143,6 @@ const DashboardMessages = () => {
   };
 
   const imageSendingHandler = async (imageString) => {
-    const receiverId = currentChat.members.find((m) => m !== seller?._id);
-
-    socket.emit("sendMessage", {
-      senderId: seller._id,
-      receiverId,
-      images: imageString,
-    });
-
     const msgObj = {
       sender: seller._id,
       text: "",
@@ -234,7 +196,7 @@ const DashboardMessages = () => {
                   setCurrentChat={setCurrentChat}
                   setUserData={setUserData}
                   setActiveStatus={setActiveStatus}
-                  online={onlineCheck(item)}
+                  online={false}
                   me={seller?._id}
                 />
               ))

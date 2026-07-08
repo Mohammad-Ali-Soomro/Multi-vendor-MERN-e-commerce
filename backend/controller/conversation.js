@@ -1,5 +1,6 @@
 const express = require("express");
 const Conversation = require("../model/conversation");
+const pusher = require("../utils/pusher");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isSeller, isAuthenticated } = require("../middleware/auth");
@@ -96,6 +97,12 @@ router.put(
         },
         { new: true }
       );
+
+      pusher.trigger(`conversation-updates`, "last-message-updated", {
+        conversationId: req.params.id,
+        lastMessage,
+        lastMessageId,
+      });
 
       res.status(201).json({
         success: true,
