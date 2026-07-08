@@ -47,7 +47,7 @@ router.post(
 
     const activationToken = createActivationToken(seller);
 
-    const activationUrl = `https://multi-vendor-mern-e-commerce-itsy-dektlk5ij.vercel.app/seller/activation/${activationToken}`;
+    const activationUrl = `https://multi-vendor-mern-e-commerce-itsy.vercel.app/seller/activation/${activationToken}`;
 
     try {
       await sendMail({
