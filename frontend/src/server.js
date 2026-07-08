@@ -1,1 +1,1 @@
-export const server = "http://localhost:8000/api/v2";
+export const server = "https://multi-vendor-mern-e-commerce-gamma.vercel.app/api/v2";

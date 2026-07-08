@@ -92,13 +92,18 @@ const Hero = () => {
                 
                 {/* Decorative grid of product thumbnails at top */}
                 <div className="absolute top-6 left-6 right-6 grid grid-cols-3 gap-2">
-                  {[
-                    "https://via.placeholder.com/80/C9B1F0/333?text=P",
-                    "https://via.placeholder.com/80/1B4332/fff?text=P",
-                    "https://via.placeholder.com/80/F7F3E8/333?text=P"
-                  ].map((src, i) => (
-                    <div key={i} className="aspect-square bg-dark-mid rounded-2xl overflow-hidden opacity-60" />
-                  ))}
+                  <div
+                    className="aspect-square rounded-2xl overflow-hidden opacity-60"
+                    style={{ backgroundColor: "var(--lavender)" }}
+                  />
+                  <div
+                    className="aspect-square rounded-2xl overflow-hidden opacity-60"
+                    style={{ backgroundColor: "var(--forest)" }}
+                  />
+                  <div
+                    className="aspect-square rounded-2xl overflow-hidden opacity-60"
+                    style={{ backgroundColor: "var(--cream-dark)" }}
+                  />
                 </div>
               </div>
             </div>
