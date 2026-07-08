@@ -5,10 +5,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { AiOutlineSend, AiOutlineArrowLeft } from "react-icons/ai";
 import { TfiGallery } from "react-icons/tfi";
-import { toast } from "react-toastify";
 
 import { server } from "../../server";
-import styles from "../../styles/styles";
 
 const pusherClient = new Pusher("10786f69d8cc214426b4", {
   cluster: "ap2",
@@ -18,13 +16,10 @@ const DashboardMessages = () => {
   const { seller } = useSelector((state) => state.seller);
 
   const [conversations, setConversations] = useState([]);
-  const [arrivalMessage, setArrivalMessage] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userData, setUserData] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [images, setImages] = useState(null);
   const [activeStatus, setActiveStatus] = useState(false);
   const [open, setOpen] = useState(false);
 

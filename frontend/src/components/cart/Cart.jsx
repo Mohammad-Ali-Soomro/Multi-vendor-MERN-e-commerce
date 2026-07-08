@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { addTocart, removeFromCart } from "../../redux/actions/cart";
-import styles from "../../styles/styles";
 
 const Cart = ({ setOpenCart }) => {
   const dispatch = useDispatch();

@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
 import { server } from "../../server";
 import Loader from "../Layout/Loader";
-import styles from "../../styles/styles";
 
 const OrderDetails = () => {
   const { id } = useParams();

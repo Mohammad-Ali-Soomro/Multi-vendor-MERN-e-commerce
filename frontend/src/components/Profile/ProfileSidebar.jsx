@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RxPerson } from "react-icons/rx";
 import { HiOutlineShoppingBag, HiOutlineReceiptRefund } from "react-icons/hi";
 import { AiOutlineMessage, AiOutlineLogin } from "react-icons/ai";
@@ -14,7 +14,6 @@ import { server } from "../../server";
 
 const ProfileSidebar = ({ setActive, active }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
 
   const logoutHandler = async () => {

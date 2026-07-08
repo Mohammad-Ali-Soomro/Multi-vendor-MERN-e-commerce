@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import { RxCross1 } from "react-icons/rx";
 
 import { server } from "../../server";
-import styles from "../../styles/styles";
 
 const Payment = () => {
   const navigate = useNavigate();

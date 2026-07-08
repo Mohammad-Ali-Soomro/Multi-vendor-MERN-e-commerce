@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { Country, State } from "country-state-city";
 
 import { server } from "../../server";
-import styles from "../../styles/styles";
 
 const Checkout = () => {
   const navigate = useNavigate();

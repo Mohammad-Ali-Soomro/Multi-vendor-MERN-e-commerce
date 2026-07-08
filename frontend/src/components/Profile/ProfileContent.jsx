@@ -61,7 +61,7 @@ const ProfileContent = ({ active }) => {
 // Subcomponent: ProfileForm
 const ProfileForm = ({ user, dispatch }) => {
   const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
+  const [email] = useState(user?.email || "");
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || "");
   const [password, setPassword] = useState("");
 

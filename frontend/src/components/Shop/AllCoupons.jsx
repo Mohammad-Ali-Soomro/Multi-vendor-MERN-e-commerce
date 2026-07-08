@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
@@ -26,7 +26,7 @@ const AllCoupons = () => {
   const [maxAmount, setMaxAmount] = useState("");
   const [selectedProducts, setSelectedProducts] = useState("");
 
-  const fetchCoupons = async () => {
+  const fetchCoupons = useCallback(async () => {
     if (!seller?._id) return;
     setIsLoading(true);
     try {
@@ -40,14 +40,14 @@ const AllCoupons = () => {
       console.error(err);
       setIsLoading(false);
     }
-  };
+  }, [seller?._id]);
 
   useEffect(() => {
     if (seller?._id) {
       dispatch(getAllProductsShop(seller._id));
       fetchCoupons();
     }
-  }, [dispatch, seller?._id]);
+  }, [dispatch, seller?._id, fetchCoupons]);
 
   const handleDelete = async (id) => {
     try {

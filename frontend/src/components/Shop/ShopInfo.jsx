@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 import { getAllProductsShop } from "../../redux/actions/product";
 import { server } from "../../server";
-import styles from "../../styles/styles";
 import Loader from "../Layout/Loader";
 
 const ShopInfo = ({ isOwner }) => {
