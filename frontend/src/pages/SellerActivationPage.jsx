@@ -6,7 +6,8 @@ import { server } from "../server";
 
 const SellerActivationPage = () => {
   const { activation_token } = useParams();
-  const [error, setError] = useState(false);
+  const [status, setStatus] = useState("loading"); // "loading" | "success" | "error"
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (activation_token) {
@@ -15,8 +16,12 @@ const SellerActivationPage = () => {
           await axios.post(`${server}/shop/activation`, {
             activation_token,
           });
+          setStatus("success");
         } catch (err) {
-          setError(true);
+          setStatus("error");
+          setErrorMessage(
+            err.response?.data?.message || "Activation failed. Please try again."
+          );
         }
       };
       sendRequest();
@@ -26,11 +31,17 @@ const SellerActivationPage = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center p-8 bg-white shadow rounded-lg max-w-md">
-        {error ? (
-          <h2 className="text-2xl font-[600] text-red-600">
-            Your token is expired!
+        {status === "loading" && (
+          <h2 className="text-2xl font-[600] text-gray-600">
+            Activating your shop account...
           </h2>
-        ) : (
+        )}
+        {status === "error" && (
+          <h2 className="text-2xl font-[600] text-red-600">
+            {errorMessage}
+          </h2>
+        )}
+        {status === "success" && (
           <h2 className="text-2xl font-[600] text-green-600">
             Your shop account has been created successfully!
           </h2>
