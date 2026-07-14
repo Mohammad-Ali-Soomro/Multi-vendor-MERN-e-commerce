@@ -13,7 +13,7 @@ const router = express.Router();
 // Helper function
 const createActivationToken = (seller) => {
   return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
-    expiresIn: "5m",
+    expiresIn: "30m",
   });
 };
 
@@ -69,39 +69,44 @@ router.post(
 router.post(
   "/activation",
   catchAsyncErrors(async (req, res, next) => {
-    try {
-      const { activation_token } = req.body;
+    const { activation_token } = req.body;
 
-      const newSeller = jwt.verify(
-        activation_token,
-        process.env.ACTIVATION_SECRET
-      );
-
-      if (!newSeller) {
-        return next(new ErrorHandler("Invalid token", 400));
-      }
-
-      const { name, email, avatar, password, zipCode, address, phoneNumber } = newSeller;
-
-      const shopExists = await Shop.findOne({ email });
-      if (shopExists) {
-        return next(new ErrorHandler("Shop already exists", 400));
-      }
-
-      const seller = await Shop.create({
-        name,
-        email,
-        avatar,
-        password,
-        zipCode,
-        address,
-        phoneNumber,
-      });
-
-      sendShopToken(seller, 201, res);
-    } catch (error) {
-      return next(new ErrorHandler("Token expired or invalid", 400));
+    if (!activation_token) {
+      return next(new ErrorHandler("Activation token is required", 400));
     }
+
+    let newSeller;
+    try {
+      newSeller = jwt.verify(activation_token, process.env.ACTIVATION_SECRET);
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
+        return next(new ErrorHandler("Activation link has expired. Please sign up again.", 400));
+      }
+      return next(new ErrorHandler("Invalid activation token. Please sign up again.", 400));
+    }
+
+    if (!newSeller) {
+      return next(new ErrorHandler("Invalid token", 400));
+    }
+
+    const { name, email, avatar, password, zipCode, address, phoneNumber } = newSeller;
+
+    const shopExists = await Shop.findOne({ email });
+    if (shopExists) {
+      return next(new ErrorHandler("Shop already exists", 400));
+    }
+
+    const seller = await Shop.create({
+      name,
+      email,
+      avatar,
+      password,
+      zipCode,
+      address,
+      phoneNumber,
+    });
+
+    sendShopToken(seller, 201, res);
   })
 );
 

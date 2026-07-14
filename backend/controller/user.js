@@ -36,7 +36,7 @@ router.post(
     };
 
     const activationToken = jwt.sign(user, process.env.ACTIVATION_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "30m",
     });
 
     const activationUrl = `https://multi-vendor-mern-e-commerce-itsy.vercel.app/activation/${activationToken}`;
@@ -61,36 +61,41 @@ router.post(
 router.post(
   "/activation",
   catchAsyncErrors(async (req, res, next) => {
-    try {
-      const { activation_token } = req.body;
+    const { activation_token } = req.body;
 
-      const newUser = jwt.verify(
-        activation_token,
-        process.env.ACTIVATION_SECRET
-      );
-
-      if (!newUser) {
-        return next(new ErrorHandler("Invalid token", 400));
-      }
-
-      const { name, email, password, avatar } = newUser;
-
-      const userExists = await User.findOne({ email });
-      if (userExists) {
-        return next(new ErrorHandler("User already exists", 400));
-      }
-
-      const user = await User.create({
-        name,
-        email,
-        password,
-        avatar,
-      });
-
-      sendToken(user, 201, res);
-    } catch (error) {
-      return next(new ErrorHandler("Token expired or invalid", 400));
+    if (!activation_token) {
+      return next(new ErrorHandler("Activation token is required", 400));
     }
+
+    let newUser;
+    try {
+      newUser = jwt.verify(activation_token, process.env.ACTIVATION_SECRET);
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
+        return next(new ErrorHandler("Activation link has expired. Please sign up again.", 400));
+      }
+      return next(new ErrorHandler("Invalid activation token. Please sign up again.", 400));
+    }
+
+    if (!newUser) {
+      return next(new ErrorHandler("Invalid token", 400));
+    }
+
+    const { name, email, password, avatar } = newUser;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return next(new ErrorHandler("User already exists", 400));
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      avatar,
+    });
+
+    sendToken(user, 201, res);
   })
 );
 

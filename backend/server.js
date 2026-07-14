@@ -10,7 +10,7 @@ process.on("uncaughtException", (err) => {
 });
 
 // config
-if (process.env.NODE_ENV !== "PRODUCTION") {
+if (process.env.NODE_ENV?.toUpperCase() !== "PRODUCTION") {
   require("dotenv").config({
     path: "config/.env",
   });
@@ -40,3 +40,5 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
+// Export for Vercel serverless
+module.exports = app;
