@@ -29,6 +29,9 @@ app.get("/test", (req, res) => {
   res.send("Hello world!");
 });
 
+// Import Database Connector
+const connectDatabase = require("./db/Database");
+
 // Import routers
 const user = require("./controller/user");
 const shop = require("./controller/shop");
@@ -40,6 +43,16 @@ const order = require("./controller/order");
 const conversation = require("./controller/conversation");
 const message = require("./controller/message");
 const withdraw = require("./controller/withdraw");
+
+// Database middleware for serverless architecture (guarantees connection before query execution)
+app.use(async (req, res, next) => {
+  try {
+    await connectDatabase();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Mount routers
 app.use("/api/v2/user", user);

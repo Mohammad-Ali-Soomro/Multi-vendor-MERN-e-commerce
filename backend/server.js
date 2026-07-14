@@ -16,8 +16,7 @@ if (process.env.NODE_ENV?.toUpperCase() !== "PRODUCTION") {
   });
 }
 
-// connect db
-connectDatabase();
+// connect db (handled by middleware in app.js for serverless)
 
 // cloudinary config
 cloudinary.config({
