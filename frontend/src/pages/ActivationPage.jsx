@@ -13,7 +13,7 @@ const ActivationPage = () => {
     if (activation_token) {
       const sendRequest = async () => {
         try {
-          const res = await axios.post(`${server}/user/activation`, {
+          await axios.post(`${server}/user/activation`, {
             activation_token,
           });
           setStatus("success");
