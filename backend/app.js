@@ -26,7 +26,19 @@ if (process.env.NODE_ENV?.toUpperCase() !== "PRODUCTION") {
 
 // routes
 app.get("/test", (req, res) => {
-  res.send("Hello world!");
+  res.json({
+    status: "working",
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      ACTIVATION_SECRET_LENGTH: process.env.ACTIVATION_SECRET ? process.env.ACTIVATION_SECRET.length : 0,
+      ACTIVATION_SECRET_PREFIX: process.env.ACTIVATION_SECRET ? process.env.ACTIVATION_SECRET.substring(0, 5) : "undefined",
+      JWT_SECRET_KEY_LENGTH: process.env.JWT_SECRET_KEY ? process.env.JWT_SECRET_KEY.length : 0,
+      JWT_SECRET_KEY_PREFIX: process.env.JWT_SECRET_KEY ? process.env.JWT_SECRET_KEY.substring(0, 5) : "undefined",
+      DB_URL_PREFIX: process.env.DB_URL ? process.env.DB_URL.substring(0, 20) : "undefined",
+      CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+    }
+  });
 });
 
 // Import routers
