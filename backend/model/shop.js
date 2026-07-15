@@ -81,9 +81,9 @@ const shopSchema = new mongoose.Schema({
 });
 
 // Hash password before saving
-shopSchema.pre("save", async function (next) {
+shopSchema.pre("save", async function () {
   if (!this.isModified("password")) {
-    next();
+    return;
   }
   this.password = await bcrypt.hash(this.password, 10);
 });
